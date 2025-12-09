@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Arsip\JenisArsipController;
+use App\Http\Controllers\Arsip\BoxController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -19,5 +20,7 @@ Route::middleware('auth')->group(function () {
     // LEVEL 1: Jenis Arsip (Dashboard Keuangan)
 Route::get('/arsip', [JenisArsipController::class, 'index'])->name('arsip.index');
 });
+// LEVEL 2: Box berdasarkan Jenis Arsip (Mirip Gambar 3.png)
+Route::get('/arsip/{jenisArsip}/box', [BoxController::class, 'index'])->name('arsip.box.index');
 
 require __DIR__.'/auth.php';
