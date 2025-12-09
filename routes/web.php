@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Arsip\JenisArsipController;
 use App\Http\Controllers\Arsip\BoxController;
 use App\Http\Controllers\Arsip\RakController;
+use App\Http\Controllers\Arsip\FolderController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,5 +26,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/arsip/{jenisArsip}/box', [BoxController::class, 'index'])->name('arsip.box.index');
 // LEVEL 3: Rak berdasarkan Box (Rak KKP/RM/TUP)
 Route::get('/box/{box}/rak', [RakController::class, 'index'])->name('arsip.rak.index');
+// LEVEL 4: Folder berdasarkan Rak (Mirip Gambar 4.png)
+Route::get('/rak/{rak}/folder', [FolderController::class, 'index'])->name('arsip.folder.index');
 
 require __DIR__ . '/auth.php';
