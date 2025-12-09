@@ -14,13 +14,13 @@
                     &larr; Kembali ke Daftar Folder
                 </a>
                 {{-- Tombol untuk menampilkan Form Upload Dokumen --}}
-                <button 
-                    onclick="document.getElementById('form-upload-dokumen').classList.toggle('hidden')" 
+                <button
+                    onclick="document.getElementById('form-upload-dokumen').classList.toggle('hidden')"
                     class="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded">
                     ⬆️ Unggah Dokumen Baru
                 </button>
             </div>
-            
+
             {{-- Form Upload Dokumen (CRUD Create) --}}
             <div id="form-upload-dokumen" class="hidden bg-white p-6 rounded-lg shadow-md mb-6">
                 <h3 class="text-lg font-semibold mb-4">Form Unggah Dokumen (PDF)</h3>
@@ -41,10 +41,10 @@
                     </div>
                 </form>
             </div>
-            
+
             {{-- Daftar Dokumen (CRUD Read) --}}
             @if ($dokumens->isEmpty())
-                <p>Folder ini belum memiliki dokumen arsip.</p>
+            <p>Folder ini belum memiliki dokumen arsip.</p>
             @endif
 
             <div class="bg-white shadow-md rounded-lg">
@@ -62,11 +62,22 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $dokumen->judul }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $dokumen->kode_klasifikasi }} (No. Item: {{ $dokumen->nomor_item }})</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                {{-- Link untuk melihat/mengunduh PDF --}}
-                                <a href="{{ Storage::url($dokumen->file_path) }}" target="_blank" class="text-indigo-600 hover:text-indigo-900">
+                                <a href="{{ Storage::url($dokumen->file_path) }}" target="_blank" class="text-indigo-600 hover:text-indigo-900 mr-4">
                                     Lihat PDF
                                 </a>
-                                {{-- Tombol Edit dan Delete (Akan diimplementasikan di fase selanjutnya) --}}
+
+                                <a href="{{ route('folder.dokumen.edit', [$folder, $dokumen]) }}" class="text-yellow-600 hover:text-yellow-900 mr-4">
+                                    Edit
+                                </a>
+
+                                {{-- Form Delete menggunakan method POST dengan directive @method('DELETE') --}}
+                                <form action="{{ route('folder.dokumen.destroy', [$folder, $dokumen]) }}" method="POST" class="inline-block" onsubmit="return confirm('Apakah Anda yakin ingin menghapus dokumen ini secara permanen? Tindakan ini akan menghapus file fisik!')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-red-600 hover:text-red-900">
+                                        Hapus
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         @endforeach
